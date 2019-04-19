@@ -1,0 +1,318 @@
+<!DOCTYPE html >
+<html lang="zh-CN"  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="../../favicon.ico">
+
+
+	<!--背景图片-->
+	<div id="web_bg" style="background-image: url(image/bg.png);"></div>
+	</div>
+	<title>AskMe</title>
+
+	<!-- Bootstrap core CSS -->
+	<!--<link href="css/bootstrap.css" rel="stylesheet">-->
+
+
+
+
+	<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+	<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+	<script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+	<script src="js/jquery-1.8.3.js"></script>
+
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+	<!------ Include the above in your HEAD tag ---------->
+	<!--<script type="text/javascript" src="js/quesion.js"></script>-->
+	<link href="css/home.css" rel="stylesheet">
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+	<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+<div class="container" >
+
+	<nav class="navbar navbar-default" role="navigation">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span
+					class="icon-bar"></span><span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">AskMe</a>
+		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span>问题广场</a></li>
+
+				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+						class="glyphicon glyphicon-search"></span>查找<b class="caret"></b></a>
+					<ul class="dropdown-menu" style="min-width: 300px;">
+						<li>
+							<div class="row">
+								<div class="col-md-12">
+									<form class="navbar-form navbar-left" role="search" action="/search" method="get">
+										<div class="input-group">
+											<input type="text" class="form-control" name="text" placeholder="Search" />
+											<span class="input-group-btn">
+		                                            <button class="btn btn-primary" type="submit">
+		                                                Go!</button>
+		                                        </span>
+										</div>
+									</form>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right" >
+				<li class="dropdown" th:if="${user}"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+						class="glyphicon glyphicon-envelope"></span>信息<span class="label label-info">32</span>
+				</a>
+					<ul class="dropdown-menu" >
+						<li><a href="#"><span class="label label-warning">4:00 AM</span>Favourites Snippet</a></li>
+						<li><a href="#"><span class="label label-warning">4:30 AM</span>Email marketing</a></li>
+						<li><a href="#"><span class="label label-warning">5:00 AM</span>Subscriber focused email
+							design</a></li>
+						<li class="divider"></li>
+						<li><a href="#" class="text-center">View All</a></li>
+					</ul>
+				</li>
+				<li class="dropdown" th:if="${user}"><a href="#" class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" th:text="${user.name}"><span
+						class="glyphicon glyphicon-user"></span>Admin <b class="caret"></b></a>
+					<ul class="dropdown-menu" >
+						<li><a href="#"><span class="glyphicon glyphicon-home" ></span>我的主页</a></li>
+						<li class="divider"></li>
+						<li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span>注销</a></li>
+					</ul>
+				</li>
+
+				<li class="dropdown" th:if="${user == Null}"><a href="/login" ><span
+						class="glyphicon glyphicon-log-in"></span>登录</a>
+
+				</li>
+			</ul>
+		</div>
+		<!-- /.navbar-collapse -->
+	</nav>
+</div>
+
+<!-- #####################################################header############################################################################-->
+
+
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="alert alert-warning alert-dismissible " role="alert" >
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+				<strong>提示</strong> 本项目为开源项目，仅用作学习
+			</div>
+
+
+			<div class="jumbotron">
+				<h1>
+					AskMe
+				</h1>
+				<p>
+					Welcome to My Interactive Quiz Platform
+				</p>
+				<p>
+					<button href="#" class="btn btn-primary btn-large"  data-toggle="modal" data-target="#QuestionModal" id="QuestionButton">提问</button>
+				</p>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-8 column">
+					<!--question-->
+					<div class = "question" th:each="vo : ${vos}">
+						<div class="container col-md-12">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="offer offer-default offer-radius" th:if="${vo.question.status == 0}">
+										<div class="shape">
+											<div class="shape-text">
+												未解决
+											</div>
+										</div>
+										<div class="offer-content">
+											<div class="message-head clearfix"  >
+												<div class="avatar pull-left" style="margin-top: 15px;margin-right: 15px; "><a href="#"><img img th:src="@{${vo.user.headUrl}}" src="http://images.nowcoder.com/head/982t.png"></a></div>
+												<div class="user-detail">
+													<h5 class="handle " style="margin-top: 15px;margin-right: 15px; " th:text="${vo.user.name}">用户名</h5>
+
+
+													<div class="post-meta">
+														<div class="asker-meta">
+															<span class="qa-message-what"></span>
+															<span class="qa-message-when">
+																	<span class="qa-message-when-data" th:text="${#dates.format(vo.question.createdDate,'yyyy-MM-dd HH:mm:ss')}">Time</span>
+																</span>
+															<span class="qa-message-who">
+																	<span class="qa-message-who-pad">by </span>
+																	<span class="qa-message-who-data" th:text="${vo.user.name}"><a href="#">用户名</a></span>
+																</span>
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+											<HR>
+											<a class="lead" th:utext="${vo.question.title}" th:href="@{~/qst(id = ${vo.question.id})}" >
+												问题标题
+											</a>
+
+											<p th:utext="${vo.question.content}" >
+												问题内容
+											</p>
+
+
+											<span class="label label-default ">Tag</span>
+											<span class="label label-default ">Tag</span>
+
+										</div>
+									</div>
+
+									<div class="offer offer-success offer-radius" th:if="${vo.question.status > 0}">
+										<div class="shape">
+											<div class="shape-text">
+												已采纳
+											</div>
+										</div>
+										<div class="offer-content">
+											<div class="message-head clearfix"  >
+												<div class="avatar pull-left" style="margin-top: 15px;margin-right: 15px; "><a href="#"><img img th:src="@{${vo.user.headUrl}}" src="http://images.nowcoder.com/head/982t.png"></a></div>
+												<div class="user-detail">
+													<h5 class="handle " style="margin-top: 15px;margin-right: 15px; " th:text="${vo.user.name}">用户名</h5>
+
+
+													<div class="post-meta">
+														<div class="asker-meta">
+															<span class="qa-message-what"></span>
+															<span class="qa-message-when">
+																	<span class="qa-message-when-data" th:text="${#dates.format(vo.question.createdDate,'yyyy-MM-dd HH:mm:ss')}">Time</span>
+																</span>
+															<span class="qa-message-who">
+																	<span class="qa-message-who-pad">by </span>
+																	<span class="qa-message-who-data" th:text="${vo.user.name}"><a href="#">用户名</a></span>
+																</span>
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+											<HR>
+											<a class="lead" th:utext="${vo.question.title}" th:href="@{~/qst(id = ${vo.question.id})}" >
+												问题标题
+											</a>
+
+											<p th:utext="${vo.question.content}" >
+												问题内容
+											</p>
+
+											<span class="label label-default ">Tag</span>
+											<span class="label label-default ">Tag</span>
+
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+
+					</div>
+					<!--question-->
+				</div>
+
+
+				<div class="col-md-4 column">
+					<div class="list-group" style="margin-top: 17px;">
+						<a href="#" class="list-group-item active">
+							<h4 class="list-group-item-heading"><strong>最新回答</strong></h4>
+
+						</a>
+
+							<tr th:each="cvo : ${cvos}">
+							<a  class="list-group-item"  href=""  th:href="@{~/qst(id = ${cvo.comment.entityId})}" >
+								<img th:src="@{${cvo.user.headUrl}}" class = "pull-left img-circle" src="http://images.nowcoder.com/head/112t.png">
+								<div class="">
+									<p class="list-group-item-heading" th:text="${cvo.user.name}" style="margin-left: 50px; color:skyblue;">用户名</p>
+									<p style="margin-left: 50px; color: #9D9D9D;" th:utext="${#dates.format(cvo.comment.createdDate,'yyyy-MM-dd HH:mm:ss')}+回答了"}><small>回答了：</small></p>
+
+								</div>
+
+								<p class = "list-group-item-text " th:utext="${cvo.comment.content}">请求一个Bootstrap组件的网站</p>
+							</a>
+							</tr>
+
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+
+<!-- 提问 -->
+<div class="modal fade" id="QuestionModal"  role="dialog"  aria-hidden="true" >
+	<form action="/user/submitqst" method="post">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel2">提问</h4>
+				</div>
+				<div class="modal-body">
+					<label>标题</label>
+					<textarea class="col-md-12" rows="1" type="text" id="title" name="title" required="required" style="resize:none" > </textarea>
+					<label>内容</label>
+					<textarea class="col-md-12" rows="6" type="text" id="content" name="content" required="required" style="resize:none" > </textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="submit" class="btn btn-primary">提交更改</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</form>
+</div>
+<!-- 提问 -->
+<!-- #####################################################footer#################################################################### -->
+<div class="container">
+
+	<hr>
+	<div class="text-center center-block">
+		<p class="txt-railway">- Copyright @AskMe 2019 -</p>
+		<br />
+		<button type="button" class="btn btn-default" aria-label="Left Align">
+			<span class="glyphicon glyphicon-star" aria-hidden="true">  <strong>STAR</strong>myGithub</span>
+		</button>
+		<button type="button" class="btn btn-default" aria-label="Left Align">
+			<span class="glyphicon glyphicon-heart" aria-hidden="true">  <strong>My Blog</strong></span>
+		</button>
+	</div>
+	<hr>
+	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>
