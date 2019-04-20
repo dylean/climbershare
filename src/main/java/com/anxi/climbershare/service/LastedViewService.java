@@ -3,7 +3,6 @@ package com.anxi.climbershare.service;
 import com.anxi.climbershare.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import site.keyu.askme.pojo.*;
 
 import java.util.ArrayList;
 import java.util.List;

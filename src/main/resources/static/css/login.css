@@ -183,10 +183,10 @@ body {
 .card .title {
   position: relative;
   z-index: 1;
-  border-left: 5px solid #ec2652;
+  border-left: 5px solid blue;
   margin: 0 0 35px;
   padding: 10px 0 10px 50px;
-  color:#ec2652;
+  color:blue;
   font-size: 32px;
   font-weight: 600;
   text-transform: uppercase;
@@ -242,7 +242,7 @@ body {
 .card .input-container .bar:before, .card .input-container .bar:after {
   content: '';
   position: absolute;
-  background: #ec2652;
+  background: blue;
   width: 0;
   height: 2px;
   -webkit-transition: .2s ease;
@@ -288,7 +288,7 @@ body {
   top: 50%;
   left: 50%;
   display: block;
-  background: #ec2652;
+  background: blue;
   width: 30px;
   height: 30px;
   border-radius: 100%;
